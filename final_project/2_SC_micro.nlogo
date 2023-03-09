@@ -23,7 +23,7 @@ globals [
 actors-own [
   economic-capital
   social-capital  ;;; turn it into EC of friends
-;  expectations ;;; remove it and use weifgted-one-of from rnd::
+                  ;  expectations ;;; remove it and use weifgted-one-of from rnd::
   income
 ]
 
@@ -97,15 +97,12 @@ to go
       ]
       set avg-economic-capital mean [economic-capital] of actors
 
-      ask actors with [color = red] [
-        move
-      ]
 
     ] [
   ])
 
   tick
-  if ticks > 1000 [stop]
+  if ticks > 100 [stop]
 end
 
 to move
@@ -117,15 +114,15 @@ end
 
 to socialize
   if economic-capital > 0 [
-    let posstible-neighbors other actors-here with [economic-capital > 0 and not obligation-neighbor? myself]
-    if any? posstible-neighbors [
-      let friend one-of posstible-neighbors
-      if random-float 1 < social-environmen-trustworthiness [
+    let possible-neighbors other actors-here with [economic-capital > 0 and not obligation-neighbor? myself]
+    if any? possible-neighbors [
+      let friend one-of possible-neighbors
+      if random-float 1 < social-environment-trustworthiness [
         if friend != nobody [
           create-obligation-to friend [set weight 1]
           set economic-capital economic-capital - 10
           ;        set expectations lput friend expectations
-;          set expectations (turtle-set expectations friend)
+          ;          set expectations (turtle-set expectations friend)
           ask friend [
             set economic-capital economic-capital - 5
             ;          set expectations lput myself expectations
@@ -142,33 +139,47 @@ end
 
 to work-or-borrow
 
-  let current-actor self
-
   let lenders in-obligation-neighbors with [economic-capital > 0]
 
   ifelse any? lenders [
 
-    ask lenders [ask out-obligation-to myself [
+    ifelse random-float 1 > exploration-rate [work] [exploit]
+
+  ]  [
+    work
+  ]
+end
+
+to work
+  set economic-capital economic-capital + income
+end
+
+to exploit
+
+  let current-actor self
+
+  let lenders in-obligation-neighbors with [economic-capital > 0]
+  ask lenders [ask out-obligation-to myself [
     set color green
-    ]]
+  ]]
 
-    let obligation-set link-set my-in-obligations with [color = green]
+  let obligation-set link-set my-in-obligations with [color = green]
 
-    ask lenders [ask out-obligation-to myself [
-      set color grey
-    ]]
+  ask lenders [ask out-obligation-to myself [
+    set color grey
+  ]]
 
-    let lender-link 	rnd:weighted-one-of obligation-set [weight]
-    let amount random 15
-    ask lender-link [
-;      show lender-link
-      ask both-ends [
-;        show self
-        if self = current-actor [stop]
+  let lender-link 	rnd:weighted-one-of obligation-set [weight]
+  let amount random 15
+  ask lender-link [
+    ;      show lender-link
+    ask both-ends [
+      ;        show self
+      if self = current-actor [stop]
 
       if economic-capital >= amount [
         set economic-capital economic-capital - amount
-;        set expectations (turtle-set expectations myself)
+        ;        set expectations (turtle-set expectations myself)
         ask current-actor [
           set economic-capital economic-capital + amount
           let my-obligation out-obligation-to myself
@@ -179,15 +190,10 @@ to work-or-borrow
 
       ]
 
-      ]
-
     ]
-  ]  [
-    set economic-capital economic-capital + income
+
   ]
 end
-
-
 
 ;;;;;;
 ;;;;;; micro controls
@@ -196,7 +202,12 @@ end
 
 to move-up
   ask learner [
-    set heading 0
+    ifelse economic-capital > 0 [
+      set heading 0
+      move
+    ] [
+      print "Need economic capital to socialize"
+    ]
   ]
   go
 end
@@ -205,7 +216,12 @@ end
 
 to move-down
   ask learner [
-    set heading 180
+    ifelse economic-capital > 0 [
+      set heading 180
+      move
+    ] [
+      print "Need economic capital to socialize"
+    ]
   ]
   go
 end
@@ -213,7 +229,12 @@ end
 
 to move-left
   ask learner [
-    set heading 270
+    ifelse economic-capital > 0 [
+      set heading 270
+      move
+    ] [
+      print "Need economic capital to socialize"
+    ]
   ]
   go
 end
@@ -221,15 +242,66 @@ end
 
 to move-right
   ask learner [
-    set heading 90
+    ifelse economic-capital > 0 [
+      set heading 90
+      move
+    ] [
+      print "Need economic capital to socialize"
+    ]
   ]
   go
 end
 
-to work
+to learner-work
   ask learner [
-    set economic-capital economic-capital + income + 5
-    fd -1
+    set economic-capital economic-capital + income
+  ]
+  go
+end
+
+to establish-connection
+  ask learner [
+    ifelse economic-capital > 0 [
+      let possible-neighbors other actors in-radius 2
+      if any? possible-neighbors [
+        let friend one-of possible-neighbors
+        if random-float 1 < social-environment-trustworthiness [
+          if friend != nobody [
+            create-obligation-to friend [set weight 1]
+            set economic-capital economic-capital - 10
+            ;        set expectations lput friend expectations
+            ;          set expectations (turtle-set expectations friend)
+            ask friend [
+              set economic-capital economic-capital - 5
+              ;          set expectations lput myself expectations
+              ;          set expectations (turtle-set expectations myself)
+              create-obligation-to myself [set weight 1]
+            ]
+          ]
+        ]
+      ]
+    ]   [
+      print "Need economic capital to establish social connection"
+      print "Nobody will trust you, if you could not invest some resources"
+    ]
+  ]
+  go
+end
+
+to explotate-connection
+  ask learner [
+
+    let current-actor self
+
+    let lenders in-obligation-neighbors with [economic-capital > 0]
+
+    ifelse any? lenders [
+      exploit
+
+    ]  [
+      print "you do not have any usefull connections"
+    ]
+
   ]
   go
 end
@@ -262,10 +334,10 @@ ticks
 30.0
 
 BUTTON
-15
-177
-88
+14
 211
+87
+245
 NIL
 setup
 NIL
@@ -294,10 +366,10 @@ NIL
 HORIZONTAL
 
 BUTTON
-109
-177
-188
+108
 211
+187
+245
 NIL
 go
 T
@@ -347,10 +419,10 @@ PENS
 "default" 1.0 1 -16777216 true "" "histogram [social-capital] of actors"
 
 BUTTON
-60
-346
-137
-379
+66
+348
+143
+381
 up
 move-up
 NIL
@@ -366,13 +438,13 @@ NIL
 SLIDER
 12
 103
-186
+185
 136
-social-environmen-trustworthiness
-social-environmen-trustworthiness
+social-environment-trustworthiness
+social-environment-trustworthiness
 0
 1
-1.0
+0.9
 0.01
 1
 NIL
@@ -386,13 +458,13 @@ CHOOSER
 scenario
 scenario
 "macro" "micro"
-0
+1
 
 BUTTON
-63
-411
-134
-444
+69
+413
+140
+446
 down
 move-down
 NIL
@@ -406,10 +478,10 @@ NIL
 1
 
 BUTTON
-15
-379
-78
-412
+21
+381
+84
+414
 left
 move-left
 NIL
@@ -423,10 +495,10 @@ NIL
 1
 
 BUTTON
-120
-379
-183
-412
+126
+381
+189
+414
 right
 move-right
 NIL
@@ -440,10 +512,10 @@ NIL
 1
 
 MONITOR
-8
-298
-117
-343
+13
+264
+194
+309
 economic-capital
 [economic-capital] of learner
 0
@@ -451,12 +523,12 @@ economic-capital
 11
 
 BUTTON
-147
-331
-202
-364
+153
+333
+208
+366
 work
-work
+learner-work
 NIL
 1
 T
@@ -474,6 +546,55 @@ SLIDER
 174
 poor-slider
 poor-slider
+0
+1
+0.5
+0.01
+1
+NIL
+HORIZONTAL
+
+BUTTON
+7
+329
+62
+362
+connect
+establish-connection
+NIL
+1
+T
+OBSERVER
+NIL
+Q
+NIL
+NIL
+1
+
+BUTTON
+152
+424
+207
+457
+explotate
+explotate-connection
+NIL
+1
+T
+OBSERVER
+NIL
+F
+NIL
+NIL
+1
+
+SLIDER
+13
+176
+185
+209
+exploration-rate
+exploration-rate
 0
 1
 0.5
