@@ -18,6 +18,7 @@ breed [actors actor]
 globals [
   avg-economic-capital
   learner ;; student operated turle
+  ;; create a line chart for proportion of poor or rich use color to distinguish between rich and poor
 ]
 
 actors-own [
@@ -45,7 +46,7 @@ to setup
   set avg-economic-capital mean [economic-capital] of actors
 
 
-  let n count actors * poor-slider
+  let n count actors * poor-slider ;change the name for lucky unlucky
   ask up-to-n-of n actors [
     set income 5
   ]
@@ -143,7 +144,7 @@ to work-or-borrow
 
   ifelse any? lenders [
 
-    ifelse random-float 1 > exploration-rate [work] [exploit]
+    ifelse random-float 1 > explotation-rate [work] [exploit]
 
   ]  [
     work
@@ -359,7 +360,7 @@ population-size
 population-size
 0
 100
-99.0
+100.0
 1
 1
 NIL
@@ -458,7 +459,7 @@ CHOOSER
 scenario
 scenario
 "macro" "micro"
-1
+0
 
 BUTTON
 69
@@ -593,11 +594,11 @@ SLIDER
 176
 185
 209
-exploration-rate
-exploration-rate
+explotation-rate
+explotation-rate
 0
 1
-0.5
+1.0
 0.01
 1
 NIL
@@ -606,39 +607,69 @@ HORIZONTAL
 @#$#@#$#@
 ## WHAT IS IT?
 
-(a general understanding of what the model is trying to show or explain)
+This is the theoretical model of influence of social and economic capital on the reproduction of inequality. The model is loking at the phenomenon through the lense of analytical sociology and highly inspired by the work of James Coleman on Social Capital, and NetLogo sugarscape model.
 
 ## HOW IT WORKS
 
-(what rules the agents use to create the overall behavior of the model)
+The model simulates the behavior of actors who start with a random amount of economic capital. If the actors have a positive amount of economic capital, they will randomly move around and socialize with other actors they encounter. If they have no economic capital, they will work or borrow from their neighbors. Actors can form social links with other actors they encounter if they have a certain amount of economic capital. The model has two different scenarios, micro and macro. In the micro scenario, one actor is set as a learner and is able to move up and down the screen. In the macro scenario, all actors move randomly.
 
 ## HOW TO USE IT
 
-(how to use the model, including a description of each of the items in the Interface tab)
+The model has two scenarios: micro and macro. 
+
++ In macro scenario you are encouranged to manipulate population level paremeters and look at the distribution of social and economic capital
++ In micro scenario you are encouranged to take control of a single agent in the model, and try different behaviour to see your individual outcomes.
+
+Macro level sliders:
+- population size determine the size of the population
+- social-environment-trustworthiness is the level of trust in the society. It determins the chance to form a social conncetion
+- poor-slider determine the proportion of the population in a lower social class
+- explotation-rate determine the probability between two types of agent behaviour of earning the economic capital: explatation of existing social ties and working
+
+
+__setup__ setups the model
+__go__ runs the model for 100 ticks
+
+
+micro level controls:
+__up, down, left,__ and, __right__ move you agent in the social environment
+
+
+__work__ increse you economic capital.
+__connect__ will try to establish a social tie with one of the actors nearby.
+__exploit__ will borrow some money from you ties, if they have any
 
 ## THINGS TO NOTICE
 
-(suggested things for the user to notice while running the model)
+Look at the density of the social network, try to decrease the speed of the model. If you have high explotation rate, then mentaning social connections might become to costly, so acorts will be "glue".
 
 ## THINGS TO TRY
 
-(suggested things for the user to try to do (move sliders, switches, etc.) with the model)
+Try to score the highest scores by social and economic capital. Think about coding some realistic behaviour for the actors. Try to roleplay this behaviour in micro scenario.
 
 ## EXTENDING THE MODEL
 
-(suggested things to add or change in the Code tab to make the model more complicated, detailed, accurate, etc.)
+At the current stage actors randomly wondering in the artificial society. Could you code some rules for more complex behaviour? Try making them boundedly rational, so they will satisfy their needs for socialization.
+
+Add dissolution of ties. In a real world social connections are expensive to mentain, so sometimes we loose friends.
+
+Add homophily by social class. It should be easier for actors to connect with those, who are similar to themselves.
 
 ## NETLOGO FEATURES
 
-(interesting or unusual features of NetLogo that the model uses, particularly in the Code tab; or where workarounds were needed for missing features)
+Model uses _rnd_ extension to impliment weighted sampling on directed ties.  
 
 ## RELATED MODELS
 
-(models in the NetLogo Models Library and elsewhere which are of related interest)
+
+* Guo, Y. & Wilensky, U. (2018). Mind the Gap curriculum. http://ccl.northwestern.edu/MindtheGap/. Center for Connected Learning and Computer-Based Modeling, Northwestern University, Evanston, IL.
 
 ## CREDITS AND REFERENCES
 
-(a reference to the model's URL on the web if it has one, as well as any other necessary credits, citations, and links)
+Coleman, James S. 1988. “Social Capital in the Creation of Human Capital.” The American Journal of Sociology 94:S95.
+
+
+Cite this model as Suschevskiy, V. (2023, March 10). Explaining Micro-macro Link in Social Capital Inequality. Retrieved from osf.io/254uj
 @#$#@#$#@
 default
 true

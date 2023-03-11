@@ -16,7 +16,7 @@ actors-own [
   economic-capital
   social-capital  ;;; turn it into EC of friends
                   ;  expectations ;;; remove it and use weifgted-one-of from rnd::
-  income
+  income         ;;; make it into social class and make within connection inexpensive
 ]
 
 learners-own [
@@ -64,7 +64,7 @@ to go
   ;; listening for messages outside of the every block means that messages
   ;; get processed and responded to as fast as possible
   listen-clients
-  every 0.5
+  every model-speed
   [
     ;; tick (and display) causes world updates messages to be sent to clients
     ;; these types of messages should only be sent inside an every block.
@@ -238,6 +238,7 @@ to spawn-robots
     setxy random-xcor random-ycor
     set economic-capital random-normal 50 20
     set income 10
+    set color grey
   ]
 
 
@@ -477,6 +478,21 @@ exploration-rate
 1
 0.5
 0.01
+1
+NIL
+HORIZONTAL
+
+SLIDER
+33
+353
+205
+386
+model-speed
+model-speed
+0
+1
+0.2
+0.05
 1
 NIL
 HORIZONTAL
