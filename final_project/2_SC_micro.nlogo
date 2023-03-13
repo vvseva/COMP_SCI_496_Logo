@@ -607,57 +607,57 @@ HORIZONTAL
 @#$#@#$#@
 ## WHAT IS IT?
 
-This is the theoretical model of influence of social and economic capital on the reproduction of inequality. The model is loking at the phenomenon through the lense of analytical sociology and highly inspired by the work of James Coleman on Social Capital, and NetLogo sugarscape model.
+This is the theoretical model of the influence of social and economic capital on the reproduction of inequality. The model is looking at the phenomenon through the lens of analytical sociology and is highly inspired by the work of James Coleman on Social Capital, and the NetLogo sugarscape model.
 
 ## HOW IT WORKS
 
-The model simulates the behavior of actors who start with a random amount of economic capital. If the actors have a positive amount of economic capital, they will randomly move around and socialize with other actors they encounter. If they have no economic capital, they will work or borrow from their neighbors. Actors can form social links with other actors they encounter if they have a certain amount of economic capital. The model has two different scenarios, micro and macro. In the micro scenario, one actor is set as a learner and is able to move up and down the screen. In the macro scenario, all actors move randomly.
+The model simulates the behaviour of actors who start with a random amount of economic capital. If the actors have a positive amount of economic capital, they will randomly move around and socialize with other actors they encounter. If they have no economic capital, they will work or borrow from their neighbours. Actors can form social links with other actors they encounter if they have a certain amount of economic capital. The model has two different scenarios, micro and macro. In the micro scenario, one actor is set as a learner and is able to move up and down the screen. In the macro scenario, all actors move randomly.
 
 ## HOW TO USE IT
 
 The model has two scenarios: micro and macro. 
 
-+ In macro scenario you are encouranged to manipulate population level paremeters and look at the distribution of social and economic capital
-+ In micro scenario you are encouranged to take control of a single agent in the model, and try different behaviour to see your individual outcomes.
++ In the macro scenario you are encouraged to manipulate population-level parameters and look at the distribution of social and economic capital
++ In the micro scenario you are encouraged to take control of a single agent in the model and try different behaviour to see your individual outcomes.
 
 Macro level sliders:
-- population size determine the size of the population
-- social-environment-trustworthiness is the level of trust in the society. It determins the chance to form a social conncetion
+- population size determines the size of the population
+- social-environment-trustworthiness is the level of trust in society. It determines the chance to form a social connection
 - poor-slider determine the proportion of the population in a lower social class
-- explotation-rate determine the probability between two types of agent behaviour of earning the economic capital: explatation of existing social ties and working
+- exploitation-rate determine the probability between two types of agent behaviour of earning the economic capital: explanation of existing social ties and working
 
 
 __setup__ setups the model
 __go__ runs the model for 100 ticks
 
 
-micro level controls:
+micro-level controls:
 __up, down, left,__ and, __right__ move you agent in the social environment
 
 
-__work__ increse you economic capital.
+__work__ increases your economic capital.
 __connect__ will try to establish a social tie with one of the actors nearby.
-__exploit__ will borrow some money from you ties, if they have any
+__exploit__ will borrow some money from your ties, if they have any
 
 ## THINGS TO NOTICE
 
-Look at the density of the social network, try to decrease the speed of the model. If you have high explotation rate, then mentaning social connections might become to costly, so acorts will be "glue".
+Look at the density of the social network, and try to decrease the speed of the model. If you have a high exploitation rate, then maintaining social connections might become too costly, so actors will be "glue".
 
 ## THINGS TO TRY
 
-Try to score the highest scores by social and economic capital. Think about coding some realistic behaviour for the actors. Try to roleplay this behaviour in micro scenario.
+Try to score the highest scores by social and economic capital. Think about coding some realistic behaviour for the actors. Try to roleplay this behaviour in the micro scenario.
 
 ## EXTENDING THE MODEL
 
-At the current stage actors randomly wondering in the artificial society. Could you code some rules for more complex behaviour? Try making them boundedly rational, so they will satisfy their needs for socialization.
+At the current stage actors randomly wander in the artificial society. Could you code some rules for more complex behaviour? Try making them boundedly rational, so they will satisfy their needs for socialization.
 
-Add dissolution of ties. In a real world social connections are expensive to mentain, so sometimes we loose friends.
+Add dissolution of ties. In the real world, social connections are expensive to maintain, so sometimes we lose friends.
 
 Add homophily by social class. It should be easier for actors to connect with those, who are similar to themselves.
 
 ## NETLOGO FEATURES
 
-Model uses _rnd_ extension to impliment weighted sampling on directed ties.  
+The model uses _rnd_ extension to implement weighted sampling on directed ties.  
 
 ## RELATED MODELS
 
